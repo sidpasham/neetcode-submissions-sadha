@@ -1,0 +1,40 @@
+public class Solution {
+    public bool CheckInclusion(string s1, string s2) {
+        // calculate counts for s1
+        Dictionary<char, int> s1Count = new Dictionary<char, int>();
+        foreach (char c in s1) {
+            if (s1Count.ContainsKey(c)) {
+                s1Count[c]++;
+            } else {
+                s1Count[c] = 1;
+            }
+        }
+
+        int need = s1Count.Count;
+        for (int i = 0; i < s2.Length; i++) {
+            Dictionary<char, int> s2Count = new Dictionary<char, int>();
+            int cur = 0;
+            for (int j = i; j < s2.Length; j++) {
+                char c = s2[j];
+                if (s2Count.ContainsKey(c)) {
+                    s2Count[c]++;
+                } else {
+                    s2Count[c] = 1;
+                }
+
+                if (!s1Count.ContainsKey(c) || s1Count[c] < s2Count[c]) {
+                    break;
+                }
+
+                if (s1Count[c] == s2Count[c]) {
+                    cur++;
+                }
+
+                if (cur == need) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
