@@ -1,27 +1,24 @@
 public class Solution {
-    public List<List<int>> CombinationSum(int[] nums, int target) {
+    public List<List<int>> Subsets(int[] nums) {
         var res = new List<List<int>>();
         var subset = new List<int>();
-        dfs(nums, target, 0, 0, subset, res);
+        dfs(nums, subset, 0, res);
         return res;
     }
 
-    public void dfs(int[] nums, int target, int i, int sum, List<int> subset, List<List<int>> res) {
-        if(sum == target) {
-            res.Add(new List<int>(subset));
-            return;
-        }
-
-        if(i >= nums.Length || sum > target) {
+    public void dfs(int[] nums, List<int> subset, int i, List<List<int>> res) {
+        if(i >= nums.Length) {
+            var copy = new List<int>(subset);
+            res.Add(copy);
             return;
         }
 
         // left decision tree
         subset.Add(nums[i]);
-        dfs(nums, target, i, sum + nums[i], subset, res);
+        dfs(nums, subset, i+1, res);
 
-        // move up slowly by removing the element on right decision tree
-        subset.Remove(nums[i]);
-        dfs(nums, target, i+1, sum, subset, res);
+        // remove the elements while tracking back as slowly move up on right decision tree
+        subset.Remove(subset[subset.Count - 1]);
+        dfs(nums, subset, i+1, res);
     }
 }
